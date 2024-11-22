@@ -1,0 +1,15 @@
+{
+  description = "peglah's slock build";
+
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+
+  outputs = { self, nixpkgs }: let
+    system = "x86_64-linux";
+    pkgs = import nixpkgs { inherit system; };
+  in {
+    packages.x86_64-linux.default = pkgs.slock.overrideAttrs (old: {
+    src = self;
+    buildInputs = (old.buildInputs or []) ++ [ pkgs.libxinerama pkgs.xorg.libXft pkgs.imlib2 ];
+  });
+  };
+}
